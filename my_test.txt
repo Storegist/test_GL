@@ -1,0 +1,18 @@
+import ntplib
+import time
+from datetime import datetime, timezone
+
+#one can turn off and on the synchronization from Control Panel/date and time 
+
+time.sleep(10)  #suspends the execution of the program for 10 seconds 
+
+NTP_SERVERS = ['ua.pool.ntp.org']
+
+for server in NTP_SERVERS:
+    client = ntplib.NTPClient()
+    response = client.request(server, version=3)
+    print(f"server: {server}")
+    print(f"client time of request: {datetime.fromtimestamp(response.orig_time, timezone.utc)}") #computer time
+    print(f"server responded with: {datetime.fromtimestamp(response.tx_time, timezone.utc)}") #ntp time
+
+    print("time difference: ", response.tx_time-response.orig_time) 
